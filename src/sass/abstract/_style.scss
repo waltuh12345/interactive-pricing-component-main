@@ -1,0 +1,252 @@
+@use "config" as *;
+@use "../global/util" as *;
+
+body {
+  background-color: var(--bg);
+  color: var(--onBg);
+  font-family: $ff;
+  font-size: $fs;
+}
+
+@mixin center-items($mh) {
+  display: grid;
+  place-items: center;
+  min-height: $mh;
+}
+
+@mixin overlay($opacity: 0.1) {
+  position: relative;
+  background-color: inherit;
+  &::after {
+    background-color: var(--onBg);
+    content: "";
+    inset: 0;
+    position: absolute;
+    opacity: $opacity;
+    z-index: -1;
+  }
+}
+
+main {
+  @include center-items(100vh);
+  padding: 2rem 0;
+  header {
+    text-align: center;
+    width: 90%;
+    margin-inline: auto;
+    margin-bottom: 3.5rem;
+    > :last-child {
+      width: 90%;
+      margin: 1.5rem auto 0 auto;
+    }
+  }
+
+  .container {
+    max-width: 500px;
+  }
+
+  form {
+    border-radius: $brd;
+    overflow: hidden;
+    background-color: inherit;
+    @include overlay();
+    box-shadow: $bs;
+    padding: 1.5rem;
+
+    > * {
+      padding: 2rem 1rem;
+    }
+  }
+}
+
+form {
+  text-align: center;
+  > :first-child {
+    @include flex(column, 1.5rem);
+    span {
+      font-weight: $bold;
+      font-size: $heading;
+    }
+
+    .range-slider {
+      width: 100%;
+      height: 7px;
+      border-radius: 10px;
+      @include overlay(0.3);
+      &:after {
+        border-radius: 10px;
+      }
+
+      &::-webkit-slider-thumb {
+        width: 30px;
+        height: 30px;
+        background-color: var(--clr-primary);
+        z-index: 100;
+
+        @include hover(background-color, $clr-primary);
+      }
+
+      &::-moz-range-thumb {
+        width: 30px;
+        height: 30px;
+      }
+    }
+  }
+
+  > :nth-child(2) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 46px;
+      height: 24px;
+      margin: 0 1rem 0 1rem;
+
+      .slider {
+        overflow: hidden;
+        @include switchOverlay(0.1);
+      }
+
+      .slider:before {
+        height: 16px;
+        width: 16px;
+        box-shadow: $bs;
+      }
+
+      input:checked + .slider {
+        background-color: var(--clr-primary);
+      }
+
+      input:checked + .slider:before {
+        -webkit-transform: translateX(22px);
+        -ms-transform: translateX(22px);
+        transform: translateX(22px);
+      }
+    }
+
+    > :last-child {
+      width: 56px;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow-x: hidden;
+      background-color: var(--clr-neutral);
+      color: var(--bg);
+      font-size: 13px;
+      padding: 0.2rem 0.4rem;
+      border-radius: 12px;
+      font-weight: $bold;
+      margin-left: 0.4rem;
+    }
+  }
+
+  > :nth-child(3) {
+    ul {
+      @include grid(0.5rem);
+      margin-bottom: 2rem;
+    }
+    li {
+      @include flex(row, 0.5rem);
+      align-items: center;
+      justify-content: center;
+      @include icon($fa-var-check, 14px, before);
+    }
+
+    button {
+      transition: background-color 0.6s, transform 0.6s;
+      background-color: var(--clr-primary);
+      color: var(--bg);
+      @include hover(background-color, $clr-primary);
+      @extend .btn;
+      border-radius: 20px;
+      padding: 0.5rem 3rem;
+      &:hover {
+        transform: scale(1.1);
+      }
+    }
+  }
+}
+
+@media (min-width: 600px) {
+  form {
+    > :first-child {
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      > :last-child {
+        flex-shrink: 0;
+      }
+    }
+
+    > .col2 > :last-child {
+      width: initial;
+    }
+
+    > .col3 {
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      text-align: initial;
+
+      ul {
+        margin: 0;
+      }
+
+      li {
+        justify-content: start;
+      }
+
+      button {
+        padding: 0.5rem 1.5rem;
+      }
+    }
+  }
+}
+
+#darkmode-toggle {
+  @extend .btn;
+  transition: transform 0.5s, opacity 0.5s;
+  @include hoverScale(1.1);
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: none;
+  padding: 0;
+  border-radius: 20px;
+  overflow: hidden;
+
+  &:hover {
+    opacity: 0.8;
+  }
+
+  i {
+    @include icon($fa-var-moon, 18px, after);
+    @include center-items(initial);
+    position: relative;
+    background-color: inherit;
+    overflow: hidden;
+    width: 58px;
+    height: 1.9rem;
+    color: var(--onBg);
+
+    &:before {
+      box-shadow: $bs;
+      content: "";
+      background-color: var(--onBg);
+      position: absolute;
+      inset: 0;
+      opacity: 0.1;
+      z-index: -1;
+    }
+  }
+
+  &.active {
+    i {
+      @include icon($fa-var-sun, 18px, after);
+    }
+  }
+}

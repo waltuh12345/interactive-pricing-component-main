@@ -1,0 +1,163 @@
+@forward "variables";
+$brd: 0.6rem;
+$bs: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
+  rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
+
+@import "../../assets/icons/scss/fontawesome.scss";
+// @import "../../assets/icons/scss/solid.scss";
+// @import "../../assets/icons/scss/brands.scss";
+
+//====COLORS=====//
+
+$light-mode: false;
+
+$bg: #121212;
+$onBg: #ffffff;
+$surface: (
+  600: #386181,
+  700: #294e6a,
+  800: #1b3c55,
+);
+$onSurface: #ffffff;
+$clr-primary: #75e2d4;
+// $clr-secondary: #256d85;
+$clr-neutral: #ef9a9a;
+$clr-on-neutral: $bg;
+$on-primary: #121212;
+
+:root {
+  --bg: #121212;
+  --onBg: #ffffff;
+  --onSurface: #ffffff;
+  --clr-primary: #75e2d4;
+  // $clr-secondary: #256d85;
+  --clr-neutral: #ef9a9a;
+  --clr-on-neutral: #121212;
+  --on-primary: #121212;
+  --light-mode: false;
+}
+
+$bg: var(--bg);
+$text-bg: var(--onBg);
+// $clr-primary: var(--clr-primary);
+// $clr-text-primary: var(--bg);
+// $clr-neutral: var(--clr-neutral);
+// $clr-text-neutral: var(--bg);
+//=======FONTS=======//
+@import url("https://fonts.googleapis.com/css2?family=Manrope:wght@600;800&display=swap");
+$ff: "Manrope", sans-serif;
+
+$medium: 600;
+$bold: 800;
+
+//====MIXIN=====//
+
+@mixin bg-gradient($clr1, $clr2) {
+  background: linear-gradient(to bottom, $clr1 0%, $clr2 100%);
+}
+
+@mixin get-color($clr, $key) {
+  color: map-get($clr, $key);
+}
+
+@mixin get-bg($clr, $key) {
+  background-color: map-get($clr, $key);
+}
+
+@mixin ff-title($fw: $medium) {
+  font-family: $ff-title;
+  font-weight: $fw;
+}
+@mixin ff($fw: $semi-bold) {
+  font-family: $ff;
+  font-weight: $fw;
+}
+
+@mixin icon($content, $fs, $pseudo) {
+  &::#{$pseudo} {
+    display: inline-block;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    content: "#{$content}";
+    font: var(--fa-font-solid);
+    font-size: $fs;
+  }
+}
+
+@mixin container($min1, $min2) {
+  width: min($min1, $min2);
+  margin-inline: auto;
+}
+
+@mixin flex($fd, $gap) {
+  display: flex;
+  flex-direction: $fd;
+  gap: $gap;
+}
+
+@mixin grid($gap) {
+  display: grid;
+  gap: $gap;
+}
+
+@mixin hover($property, $clr) {
+  @media (hover: hover) and (pointer: fine) {
+    $func: lighten;
+
+    &:hover {
+      @if (lightness($clr) > 50) {
+        #{$property}: darken($clr, 20%);
+      } @else {
+        #{$property}: lighten($clr, 10%);
+      }
+    }
+  }
+}
+
+@mixin hoverScale($scale: 102%) {
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      transform: scale($scale);
+    }
+  }
+}
+
+@mixin switchOverlay($opacity: 0.1) {
+  background-color: inherit;
+
+  &::after {
+    position: absolute;
+    content: "";
+    background-color: var(--onBg);
+    inset: 0;
+    opacity: $opacity;
+    z-index: -1;
+  }
+}
+
+//====STYLES=====//
+
+//! OPTIONAL
+:root {
+  //font-size: 62.5%;
+}
+
+$fs: 16px;
+
+$heading: clamp(1.31rem, calc(-1.5rem + 9vw), 1.88rem);
+$sub-heading: clamp(1.13rem, calc(0.5rem + 2vw), 1.25rem);
+
+body {
+  font-size: $fs;
+  font-weight: $medium;
+}
+
+h1 {
+  font-size: $heading;
+  font-weight: $bold;
+}
+
+h2 {
+  font-size: $sub-heading;
+  font-weight: $bold;
+}
